@@ -56,6 +56,8 @@ var (
 		"RNTO": commandRnto{},
 		"RMD":  commandRmd{},
 		"SIZE": commandSize{},
+		"MD5":  commandMd5{},  //add r0123r
+		"SITE": commandSite{}, //add r0123r
 		"STOR": commandStor{},
 		"STRU": commandStru{},
 		"SYST": commandSyst{},
@@ -989,8 +991,7 @@ func (cmd commandSize) Execute(conn *Conn, param string) {
 	path := conn.buildPath(param)
 	stat, err := conn.driver.Stat(path)
 	if err != nil {
-		log.Printf("Size: error(%s)", err)
-		conn.writeMessage(450, fmt.Sprint("path", path, "not found"))
+		conn.writeMessage(450, fmt.Sprint("path:", path, " not found"))
 	} else {
 		conn.writeMessage(213, strconv.Itoa(int(stat.Size())))
 	}
